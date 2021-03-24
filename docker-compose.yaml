@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  db:
+    container_name: mysql # needs to be called mysql because that is the container name referenced in the app.py file
+    build: ./db #specify the build context, has to be relative to where the Dockerfile is. The docker file associated with the mysql container is in the db directory (refer to file structure)
+    image: trio-task-db #when the image is build, this is what it will be referenced as.
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: flask-db # anything that is considered as a sensitive piece of data should be set as an environment variable.
+  flask-app:
+    container_name: flask-app #This has to be called flask-app because the nginx.conf is pointing to a container callwd flask-app
+    build: ./flask-app
+    image: trio-task-flask-app
+  nginx:
+    image: nginx:alpine
+    ports:
+    - target: 80
+      published: 80
+    volumes:
+    - type: bind
+      source: ./nginx/nginx.conf
+      target: /etc/nginx/nginx.conf
