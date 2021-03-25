@@ -24,4 +24,4 @@ sudo curl -L "https://github.com/docker/compose/releases/download/${version}/doc
 # make the file executable
 sudo chmod +x /usr/local/bin/docker-compose
 
-docker login
+echo $DOCKER_PASSWORD | docker login --username jp22237 --password-stdin
